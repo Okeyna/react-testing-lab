@@ -28,11 +28,22 @@ function AccountContainer() {
   }
   
   // Sort function here
-  function onSort(sortBy){
-    
+  function onSort(sortBy) {
+    const sorted = [...transactions].sort((a, b) => {
+      if (sortBy === "description") {
+        return a.description.localeCompare(b.description);
+      } else if (sortBy === "category") {
+        return a.category.localeCompare(b.category);
+      } 
+    });
+    return setTransactions(sorted)
   }
 
   // Filter using search here and pass new variable down
+
+  const visibileTransactions = transactions.filter((transactions) => {
+    return transactions.description.toLowerCase().includes(search)
+  })
   
 
   return (
@@ -40,9 +51,10 @@ function AccountContainer() {
       <Search setSearch={setSearch}/>
       <AddTransactionForm postTransaction={postTransaction}/>
       <Sort onSort={onSort}/>
-      <TransactionsList transactions={transactions} />
+      <TransactionsList transactions={visibileTransactions} />
     </div>
   );
 }
 
 export default AccountContainer;
+
